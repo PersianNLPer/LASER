@@ -106,7 +106,7 @@ Mine () {
   corpus_tgt=$2
   lsrc=$3
   ltgt=$4
-  cand="candidates.tsv"
+  cand=$5
   if [ ! -s ${cand} ] ; then
     python3 ${LASER}/source/mine_bitexts.py \
        ${corpus_src} ${corpus_tgt} \
@@ -129,13 +129,14 @@ echo -e "\nProcessing BUCC data in ${data}"
 
 src=$1; shift
 tgt=$1; shift
+cand=$1; shift
 
   # Tokenize and embed train
   Embed ${src} ${lsrc} ${encoder} ${bpe_codes}
   Embed ${tgt} ${ltgt} ${encoder} ${bpe_codes}
 
   # mine for texts in train
-  Mine ${src} ${tgt} ${lsrc} ${ltgt}
+  Mine ${src} ${tgt} ${lsrc} ${ltgt} ${cand}
   exit
   # optimize threshold on BUCC training data and provided gold alignments
   if [ ! -s ${part}.log ] ; then
