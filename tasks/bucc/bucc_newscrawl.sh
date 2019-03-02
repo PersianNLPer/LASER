@@ -111,7 +111,7 @@ Mine () {
     python3 ${LASER}/source/mine_bitexts.py \
        ${corpus_src} ${corpus_tgt} \
        --src-lang ${lsrc} --trg-lang ${ltgt} \
-       --src-embeddings ${bn}.enc.${l1} --trg-embeddings ${bn}.enc.${l2} \
+       --src-embeddings "$corpus_src.enc" --trg-embeddings "$corpus_tgt.enc" \
        --unify --mode mine --retrieval max --margin ratio -k 4  \
        --output ${cand} \
        --verbose --gpu
@@ -134,10 +134,9 @@ tgt=$1; shift
   Embed ${src} ${lsrc} ${encoder} ${bpe_codes}
   Embed ${tgt} ${ltgt} ${encoder} ${bpe_codes}
 
-  exit
   # mine for texts in train
-  Mine ${edir}/${part} ${lsrc} ${ltrg}
-
+  Mine ${src} ${tgt} ${lsrc} ${ltgt}
+  exit
   # optimize threshold on BUCC training data and provided gold alignments
   if [ ! -s ${part}.log ] ; then
     python3 bucc.py \
