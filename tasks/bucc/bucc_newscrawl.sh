@@ -82,8 +82,8 @@ ExtractBUCC () {
 
 Embed () {
   ll=$2
-  txt="$1.txt.${ll}"
-  enc="$1.enc.${ll}"
+  txt="$1"
+  enc="$1.enc"
   if [ ! -s ${enc} ] ; then
     cat ${txt} | python3 ${LASER}/source/embed.py \
       --encoder ${encoder} \
