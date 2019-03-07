@@ -278,9 +278,11 @@ def EncodeFilep(encoder, inp_file, out_file, buffer_size=10000, verbose=False):
         encoder.encode_sentences(sentences).tofile(out_file)
         n += len(sentences)
         if verbose and n % 10000 == 0:
-            print('\r - Encoder: {:d} sentences'.format(n), end='')
+            print(' - Encoder: {:d} sentences\n'.format(n), end='')
+            # print('\r - Encoder: {:d} sentences'.format(n), end='')
     if verbose:
-        print('\r - Encoder: {:d} sentences'.format(n), end='')
+        print(' - Encoder: {:d} sentences\n'.format(n), end='')
+        # print('\r - Encoder: {:d} sentences'.format(n), end='')
         EncodeTime(t)
 
 # Encode sentences (file names)
