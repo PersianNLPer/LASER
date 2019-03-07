@@ -63,6 +63,13 @@ if __name__ == '__main__':
     parser.add_argument('-v', '--verbose', action='store_true',
         help='Detailed output')
 
+    parser.add_argument('--buffer-size', type=int, default=10000,
+        help='Buffer size (sentences)')
+    parser.add_argument('--max-tokens', type=int, default=12000,
+        help='Maximum number of tokens to process in a batch')
+    parser.add_argument('--max-sentences', type=int, default=None,
+        help='Maximum number of sentences to process in a batch')
+
     parser.add_argument('-o', '--output_dir', required=True,
         help='Output sentence embeddings')
     parser.add_argument('--cpu', action='store_true',
