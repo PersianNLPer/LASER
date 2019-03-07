@@ -84,19 +84,25 @@ if __name__ == '__main__':
     ifbasename = os.path.basename(args.input)
     if args.token_lang != '--':
         tok_fname = os.path.join(args.output_dir, ifbasename + '.tok')
-        Token(ifname,
-              tok_fname,
-              lang=args.token_lang,
-              romanize=True if args.token_lang == 'el' else False,
-              lower_case=True, gzip=False,
-              verbose=args.verbose, over_write=False)
+        if not os.path.exists(tok_fname):
 
+            Token(ifname,
+                  tok_fname,
+                  lang=args.token_lang,
+                  romanize=True if args.token_lang == 'el' else False,
+                  lower_case=True, gzip=False,
+                  verbose=args.verbose, over_write=False)
+        else:
+            print(' - Tokenizer: {} exists. Skipping the tokenization and jump to BPEfying step.'.format(tok_fname))
         ifname = tok_fname
 
     if args.bpe_codes:
         bpe_fname = os.path.join(args.output_dir, ifbasename + '.bpe')
-        BPEfastApply(ifname,
-                     bpe_fname,
-                     args.bpe_codes,
-                     verbose=args.verbose, over_write=False)
+        if not os.path.exists(bpe_fname):
+            BPEfastApply(ifname,
+                         bpe_fname,
+                         args.bpe_codes,
+                         verbose=args.verbose, over_write=False)
+        else:
+            print(' - fast BPE: {} exists. Skipping the BPEfying step.'.format(tok_fname))
 
