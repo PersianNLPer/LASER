@@ -33,7 +33,6 @@ assert os.environ.get('LASER'), 'Please set the enviornment variable LASER'
 LASER = os.environ['LASER']
 
 sys.path.append(LASER + '/source/lib')
-from text_processing import Token, BPEfastApply
 
 
 SPACE_NORMALIZER = re.compile("\s+")
@@ -314,17 +313,13 @@ def EmbedLoad(fname, dim=1024, verbose=False):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='LASER: Embed sentences')
     parser.add_argument('--input', type=str, required=True,
-                        help='Input file to be encoded')
+                        help='Input file to be encoded (We assume it to be lowercased, tokenized, and BPEfied text.')
     parser.add_argument('--encoder', type=str, required=True,
         help='encoder to be used')
-    parser.add_argument('--token-lang', type=str, default='--',
-        help="Perform tokenization with given language ('--' for no tokenization)")
-    parser.add_argument('--bpe-codes', type=str, default=None,
-        help='Apply BPE using specified codes')
     parser.add_argument('-v', '--verbose', action='store_true',
         help='Detailed output')
 
-    parser.add_argument('-o', '--output', required=True,
+    parser.add_argument('--output', required=True,
         help='Output sentence embeddings')
     parser.add_argument('--buffer-size', type=int, default=10000,
         help='Buffer size (sentences)')
@@ -350,28 +345,10 @@ if __name__ == '__main__':
                               sort_kind='mergesort' if args.stable else 'quicksort',
                               cpu=args.cpu)
 
-    with tempfile.TemporaryDirectory() as tmpdir:
-        ifname = args.input  # stdin will be used
-        if args.token_lang != '--':
-            tok_fname = os.path.join(tmpdir, 'tok')
-            Token(ifname,
-                  tok_fname,
-                  lang=args.token_lang,
-                  romanize=True if args.token_lang == 'el' else False,
-                  lower_case=True, gzip=False,
-                  verbose=args.verbose, over_write=False)
-            ifname = tok_fname
+    ifname = args.input
 
-        if args.bpe_codes:
-            bpe_fname = os.path.join(tmpdir, 'bpe')
-            BPEfastApply(ifname,
-                         bpe_fname,
-                         args.bpe_codes,
-                         verbose=args.verbose, over_write=False)
-            ifname = bpe_fname
-
-        EncodeFile(encoder,
-                   ifname,
-                   args.output,
-                   verbose=args.verbose, over_write=False,
-                   buffer_size=args.buffer_size) 
+    EncodeFile(encoder,
+               ifname,
+               args.output,
+               verbose=args.verbose, over_write=False,
+               buffer_size=args.buffer_size)
