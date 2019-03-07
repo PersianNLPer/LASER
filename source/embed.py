@@ -313,6 +313,8 @@ def EmbedLoad(fname, dim=1024, verbose=False):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='LASER: Embed sentences')
+    parser.add_argument('--input', type=str, required=True,
+                        help='Input file to be encoded')
     parser.add_argument('--encoder', type=str, required=True,
         help='encoder to be used')
     parser.add_argument('--token-lang', type=str, default='--',
@@ -349,7 +351,7 @@ if __name__ == '__main__':
                               cpu=args.cpu)
 
     with tempfile.TemporaryDirectory() as tmpdir:
-        ifname = ''  # stdin will be used
+        ifname = args.input  # stdin will be used
         if args.token_lang != '--':
             tok_fname = os.path.join(tmpdir, 'tok')
             Token(ifname,

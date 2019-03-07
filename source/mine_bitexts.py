@@ -41,7 +41,7 @@ from text_processing import Token, BPEfastApply
 
 def TextLoadUnify(fname, args):
     if args.verbose:
-        print(' - loading texts {:s}: '.format(fname), end='')
+        print(' - loading texts {:s}: '.format(fname))
     fin = open(fname, encoding=args.encoding, errors='surrogateescape')
     inds = []
     sents = []
@@ -193,6 +193,7 @@ parser.add_argument('--trg-embeddings', required=True,
     help='Precomputed target sentence embeddings')
 parser.add_argument('--dim', type=int, default=1024,
     help='Embedding dimensionality')
+
 args = parser.parse_args()
 
 print('LASER: tool to search, score or mine bitexts')
