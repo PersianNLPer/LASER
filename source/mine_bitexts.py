@@ -94,8 +94,8 @@ def knnGPU(x, y, k, mem=512*1024*1024):
         for yfrom in range(0, y.shape[0], batch_size):
             yto = min(yfrom + batch_size, y.shape[0])
             # print('{}-{}  ->  {}-{}'.format(xfrom, xto, yfrom, yto))
-            # idx = faiss.IndexFlatIP(dim)
-            idx = faiss.GpuIndexIVFFlat(dim)
+            idx = faiss.IndexFlatIP(dim)
+            # idx = faiss.GpuIndexIVFFlat(dim)
             idx = faiss.index_cpu_to_all_gpus(idx)
             idx.add(y[yfrom:yto])
             bsim, bind = idx.search(x[xfrom:xto], min(k, yto-yfrom))
