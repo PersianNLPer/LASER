@@ -81,7 +81,9 @@ def knn(x, y, k, use_gpu):
 #
 ###############################################################################
 
-def knnGPU(x, y, k, mem=5*1024*1024*1024):
+def knnGPU(x, y, k, mem=512*1024*1024):
+    ngpus = faiss.get_num_gpus()
+    print("number of GPUs:", ngpus)
     dim = x.shape[1]
     batch_size = mem // (dim*4)
     sim = np.zeros((x.shape[0], k), dtype=np.float32)
